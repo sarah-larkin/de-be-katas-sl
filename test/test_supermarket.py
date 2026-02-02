@@ -1,3 +1,5 @@
+import pytest
+
 from src.supermarket import queue_time
 
 def test_queue_time_returns_0_if_no_customers():
@@ -5,8 +7,9 @@ def test_queue_time_returns_0_if_no_customers():
     assert queue_time([], 5) == 0
 
 def test_queue_time_returns_error_if_no_checkouts(): 
-    assert queue_time([1], 0) == "error"
-    assert queue_time([5, 2, 3], 0) == "error"
+    with pytest.raises(ValueError): 
+        queue_time([1], 0)
+        queue_time([5, 2, 3], 0)
 
 def test_queue_time_returns_int(): 
     assert queue_time([1], 1) == 1
@@ -25,3 +28,8 @@ def test_queue_time_returns_highest_no_when_2_customers_and_2_checkouts():
 def test_queue_time_returns_sum_of_half_queue_when_2_checkouts(): 
     assert queue_time([2, 2, 2], 2) == 4
     assert queue_time([2, 3, 10], 2) == 12
+
+def test_queue_time_returns_max_time_when_multple_checkouts(): 
+    assert queue_time([2, 2, 2], 3) == 2
+    assert queue_time([2, 3, 10], 5) == 10
+    assert queue_time([10, 12, 14, 2, 4, 5], 3) == 17

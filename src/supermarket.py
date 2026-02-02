@@ -8,34 +8,30 @@ def queue_time(customers: list, checkouts: int) -> int:
     Returns:
         int: the amount of time for the queue to be cleared
     """
-    
-    if len(customers) == 0: 
+    #edge cases
+    if not customers: 
         return 0 
     
     elif checkouts < 1: 
-        return "error"
+        raise ValueError("No Checkout")
 
-    elif checkouts == 1: 
-        return sum(customers)
+    #option of multiple checkouts -> list 
+    #next customer needs to be assigned to the lowest value checkout each time
+    #find the total time for each checkout 
 
-    elif len(customers) == checkouts:
-        return max(customers)
+    checkout_list = [0] * checkouts # list of 0's for each checkout 
+    #[0] * 3 == [0, 0, 0]
 
-    elif checkouts == 2: 
-        checkout1 = []
-        checkout2 = []
+    #list.index(element, start, end) method 
+    #returns the position at the first occurrence of the specified value.
 
-        for i in range(len(customers)): 
-            if i == 0: 
-                checkout1.append(customers[i])
-            elif i % 2 == 0: 
-                checkout1.append(customers[i])
-            else: checkout2.append(customers[i])
+    for customer in customers: 
+        quickest_till_position = checkout_list.index(min(checkout_list))
+        checkout_list[quickest_till_position] += customer
+    
+    return max(checkout_list)
 
-        checkout1_total = sum(checkout1)
-        checkout2_total = sum(checkout2)
 
-        if checkout1_total > checkout2_total: 
-            return checkout1_total
-        else: return checkout2_total
 
+
+#queue_time([2, 3, 10], 2)
